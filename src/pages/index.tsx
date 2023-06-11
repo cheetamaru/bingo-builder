@@ -1,3 +1,4 @@
+import BingoField from '@/components/BingoField'
 import Head from 'next/head'
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       </Head>
       <main>
         <h1>Bingo Builder</h1>
+        <BingoField />
       </main>
     </>
   )
