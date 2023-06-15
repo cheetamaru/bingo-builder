@@ -21,9 +21,13 @@ const getInitialItems = (): BingoItem[][] => {
 export default function BingoField() {
     const [items, setItems] =  useState(getInitialItems())
 
+    const handleClick = (content: BingoItem['content']) => {
+        console.log(content)
+    }
+
     const getCols = (row: BingoItem[]) => {
         return row.map(({key, content}) => {
-            return <BingoBlock onClick={() => console.log('clicked', `${content}`)} key={key}>
+            return <BingoBlock onClick={() => handleClick(content)} key={key}>
                 {content}
             </ BingoBlock>
         })
@@ -37,19 +41,7 @@ export default function BingoField() {
         })
     }
 
-    const onClick = () => {
-        const newItems = [...items]
-
-        newItems[0][0] = {
-            key: newItems[0][0].key,
-            content: "new"
-        }
-
-        setItems(newItems)
-    }
-
     return <>
-        <button onClick={onClick}>Change</button>
         {getEmptyBlocks()}
     </>
 }
