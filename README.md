@@ -16,7 +16,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ### Editing
 
 - Edit all bingo blocks
-- Drag-n-drop blocks to reaarange them
+- Drag-n-drop blocks to rearange them by moving
+- Swap content of 2 chosen blocks
+- Shuffle all blocks
 - Customize size of a bingo board
 
 ### Using
