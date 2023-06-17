@@ -1,5 +1,5 @@
 import BingoBlock from '@/components/BingoBlock'
-import { useState } from 'react';
+import { useImmer } from 'use-immer';
 
 type BingoItem = {
     key: string;
@@ -43,21 +43,18 @@ const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
 
 
 export default function BingoField() {
-    const [items, setItems] =  useState(getInitialArray())
+    const [items, updateItems] =  useImmer(getInitialArray())
 
     const handleClick = (content: BingoItem) => {
-        const newItems = items.map((item) => {
-            if (content.index === item.index) {
-                return {
-                    ...item,
-                    content: "changed!"
-                }
+        updateItems(draft => {
+            const chosenItem = draft.find(item => item.index === content.index)
+
+            if (!chosenItem) {
+                throw new Error("Item Not Found")
             }
 
-            return item
+            chosenItem.content = "changed!"
         })
-
-        setItems(newItems)
     }
 
     const getCols = (row: BingoItem[]) => {
