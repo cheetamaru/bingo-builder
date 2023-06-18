@@ -1,4 +1,5 @@
 import BingoBlock from '@/components/BingoBlock'
+import { useState } from 'react';
 import { useImmer } from 'use-immer';
 
 type BingoItem = {
@@ -44,10 +45,11 @@ const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
 
 export default function BingoField() {
     const [items, updateItems] =  useImmer(getInitialArray())
+    const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
-    const handleClick = (content: BingoItem) => {
+    const handleClick = (bingoItem: BingoItem) => {
         updateItems(draft => {
-            const chosenItem = draft.find(item => item.index === content.index)
+            const chosenItem = draft.find(item => item.index === bingoItem.index)
 
             if (!chosenItem) {
                 throw new Error("Item Not Found")
@@ -57,10 +59,42 @@ export default function BingoField() {
         })
     }
 
+    const handleSwap = (bingoItem: BingoItem) => {
+        if (!swapBuffer) {
+            setSwapBuffer(bingoItem)
+
+            return
+        }
+
+        updateItems(draft => {
+            const prevIndex = swapBuffer.index
+
+            if (prevIndex === undefined) {
+                throw new Error("Item Index Not Found")
+            }
+
+            draft[prevIndex].content = bingoItem.content
+
+            const chosenItem = draft.find(item => item.index === bingoItem.index)
+
+            if (!chosenItem) {
+                throw new Error("Item Not Found")
+            }
+
+            chosenItem.content = swapBuffer.content
+        })
+
+        setSwapBuffer(null)
+    }
+
     const getCols = (row: BingoItem[]) => {
         return row.map((block) => {
             const {key, content} = block
-            return <BingoBlock onClick={() => handleClick(block)} key={key}>
+            return <BingoBlock
+                onClick={() => handleClick(block)}
+                key={key}
+                onSwap={() => handleSwap(block)}
+            >
                 {content}
             </ BingoBlock>
         })
