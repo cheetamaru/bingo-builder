@@ -44,7 +44,7 @@ const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
 
 
 export default function BingoField() {
-    const [items, updateItems] =  useImmer(getInitialArray())
+    const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray())
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
     const handleClick = (bingoItem: BingoItem) => {
@@ -67,15 +67,15 @@ export default function BingoField() {
         }
 
         updateItems(draft => {
-            const prevIndex = swapBuffer.index
+            const prevItem = draft.find(item => item.key === swapBuffer.key)
 
-            if (prevIndex === undefined) {
-                throw new Error("Item Index Not Found")
+            if (!prevItem) {
+                throw new Error("Buffered Item Not Found")
             }
 
-            draft[prevIndex].content = bingoItem.content
+            prevItem.content = bingoItem.content
 
-            const chosenItem = draft.find(item => item.index === bingoItem.index)
+            const chosenItem = draft.find(item => item.key === bingoItem.key)
 
             if (!chosenItem) {
                 throw new Error("Item Not Found")
@@ -91,8 +91,8 @@ export default function BingoField() {
         return row.map((block) => {
             const {key, content} = block
             return <BingoBlock
-                onClick={() => handleClick(block)}
                 key={key}
+                onClick={() => handleClick(block)}
                 onSwap={() => handleSwap(block)}
             >
                 {content}
