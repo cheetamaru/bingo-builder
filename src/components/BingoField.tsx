@@ -1,4 +1,5 @@
 import BingoBlock from '@/components/BingoBlock'
+import { getShuffledArray } from '@/utils';
 import { useState } from 'react';
 import { useImmer } from 'use-immer';
 
@@ -110,7 +111,12 @@ export default function BingoField() {
         })
     }
 
+    const handleShuffle = () => {
+        updateItems(getShuffledArray(items))
+    }
+
     return <>
+        <button onClick={handleShuffle}>Shuffle</button>
         {getEmptyBlocks()}
     </>
 }
