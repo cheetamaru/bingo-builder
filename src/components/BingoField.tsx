@@ -1,30 +1,14 @@
 import BingoBlock from '@/components/BingoBlock'
+import { BingoBlockService } from '@/services/BingoBlockService';
+import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
 import { useState } from 'react';
 import { useImmer } from 'use-immer';
-
-type BingoItem = {
-    key: string;
-    content: string;
-    xCoord?: number;
-    yCoord?: number;
-    index?: number;
-}
 
 const rows = 5;
 const cols = 5;
 
 const total = rows * cols;
-
-const getInitialArray = (): BingoItem[] => {
-    return Array(total).fill(null).map((el, index) => {
-        return {
-            key: String(index),
-            content: `${index}`,
-            index,
-        }
-    })
-}
 
 const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
     const matrix: BingoItem[][] = []
@@ -43,9 +27,10 @@ const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
     return matrix
 }
 
+const { getInitialArray } = BingoBlockService
 
 export default function BingoField() {
-    const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray())
+    const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
     const handleClick = (bingoItem: BingoItem) => {
