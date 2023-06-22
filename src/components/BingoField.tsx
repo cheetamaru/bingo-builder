@@ -10,24 +10,7 @@ const cols = 5;
 
 const total = rows * cols;
 
-const arrayToMatrix = (arr: BingoItem[]): BingoItem[][] => {
-    const matrix: BingoItem[][] = []
-
-    let k = -1
-
-    arr.forEach((el, index) => {
-        if (index % cols === 0) {
-            k++
-            matrix[k] = []
-        }
-
-        matrix[k].push(el);
-    })
-
-    return matrix
-}
-
-const { getInitialArray } = BingoBlockService
+const { getInitialArray, arrayToMatrix } = BingoBlockService
 
 export default function BingoField() {
     const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray(total))
@@ -87,7 +70,7 @@ export default function BingoField() {
     }
 
     const getEmptyBlocks = () => {
-        const matrix = arrayToMatrix(items)
+        const matrix = arrayToMatrix(items, cols)
 
         return matrix.map((row, rowIndex) => {
             return <div key={rowIndex}>
