@@ -2,17 +2,20 @@ import BingoBlock from '@/components/BingoBlock'
 import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 
-const rows = 5;
-const cols = 5;
-
-const total = rows * cols;
+const defaultRows = 5;
+const defaultCols = 5;
 
 const { getInitialArray, arrayToMatrix } = BingoBlockService
 
 export default function BingoField() {
+    const [rows, setRows] = useState<number>(defaultRows)
+    const [cols, setCols] = useState<number>(defaultCols)
+
+    const total = rows * cols;
+
     const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
@@ -69,9 +72,9 @@ export default function BingoField() {
         })
     }
 
-    const getEmptyBlocks = () => {
-        const matrix = arrayToMatrix(items, cols)
+    const matrix = useMemo(() => arrayToMatrix(items, cols), [items, cols]) 
 
+    const getEmptyBlocks = () => {
         return matrix.map((row, rowIndex) => {
             return <div key={rowIndex}>
                 {getCols(row)}
@@ -83,7 +86,17 @@ export default function BingoField() {
         updateItems(getShuffledArray(items))
     }
 
+    const handleColInput = (val: string) => {
+        const newCols = Number(val)
+        setCols(newCols)
+        const total = rows * newCols;
+        updateItems(getInitialArray(total))
+    }
+
     return <>
+        <div>
+            <input value={cols} onChange={(e) => handleColInput(e.target.value)}></input>
+        </div>
         <button onClick={handleShuffle}>Shuffle</button>
         {getEmptyBlocks()}
     </>
