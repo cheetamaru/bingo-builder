@@ -88,27 +88,33 @@ export default function BingoField() {
 
     const handleColInput = (val: string) => {
         const newCols = Number(val)
-        setCols(newCols)
-        const total = rows * newCols;
-        updateItems(getInitialArray(total))
+
+        if (newCols >=2 && newCols <= 10) {
+            setCols(newCols)
+            const total = rows * newCols;
+            updateItems(getInitialArray(total))
+        }
     }
 
     const handleRowInput = (val: string) => {
         const newRows = Number(val)
-        setRows(newRows)
-        const total = newRows * cols;
-        updateItems(getInitialArray(total))
+
+        if (newRows >=2 && newRows <= 10) {
+            setRows(newRows)
+            const total = newRows * cols;
+            updateItems(getInitialArray(total))
+        }
     }
 
 
     return <>
         <div>
-            <input value={cols} onChange={(e) => handleColInput(e.target.value)}></input>
+            Board size:
+            <input type="number" min="2" max="10" value={cols} onChange={(e) => handleColInput(e.target.value)}></input>
+            x
+            <input type="number" min="2" max="10" value={rows} onChange={(e) => handleRowInput(e.target.value)}></input>
+            <button onClick={handleShuffle}>Shuffle</button>
         </div>
-        <div>
-            <input value={rows} onChange={(e) => handleRowInput(e.target.value)}></input>
-        </div>
-        <button onClick={handleShuffle}>Shuffle</button>
         {getEmptyBlocks()}
     </>
 }
