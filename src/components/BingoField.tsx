@@ -5,14 +5,11 @@ import { getShuffledArray } from '@/utils';
 import { useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 
-const defaultRows = 5;
-const defaultCols = 5;
-
-const { getInitialArray, arrayToMatrix } = BingoBlockService
+const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
 export default function BingoField() {
-    const [rows, setRows] = useState<number>(defaultRows)
-    const [cols, setCols] = useState<number>(defaultCols)
+    const [rows, setRows] = useState<number>(boardSize.defaultRows)
+    const [cols, setCols] = useState<number>(boardSize.defaultCols)
 
     const total = rows * cols;
 
@@ -89,7 +86,7 @@ export default function BingoField() {
     const handleColInput = (val: string) => {
         const newCols = Number(val)
 
-        if (newCols >=2 && newCols <= 10) {
+        if (newCols >=boardSize.minCols && newCols <= boardSize.maxCols) {
             setCols(newCols)
             const total = rows * newCols;
             updateItems(getInitialArray(total))
@@ -99,7 +96,7 @@ export default function BingoField() {
     const handleRowInput = (val: string) => {
         const newRows = Number(val)
 
-        if (newRows >=2 && newRows <= 10) {
+        if (newRows >=boardSize.minRows && newRows <= boardSize.maxRows) {
             setRows(newRows)
             const total = newRows * cols;
             updateItems(getInitialArray(total))
@@ -110,9 +107,21 @@ export default function BingoField() {
     return <>
         <div>
             Board size:
-            <input type="number" min="2" max="10" value={cols} onChange={(e) => handleColInput(e.target.value)}></input>
+            <input
+                type="number"
+                min={boardSize.minCols}
+                max={boardSize.maxCols}
+                value={cols}
+                onChange={(e) => handleColInput(e.target.value)}
+            />
             x
-            <input type="number" min="2" max="10" value={rows} onChange={(e) => handleRowInput(e.target.value)}></input>
+            <input
+                type="number"
+                min={boardSize.minRows}
+                max={boardSize.maxRows}
+                value={rows}
+                onChange={(e) => handleRowInput(e.target.value)}
+            />
             <button onClick={handleShuffle}>Shuffle</button>
         </div>
         {getEmptyBlocks()}

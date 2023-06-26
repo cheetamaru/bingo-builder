@@ -27,7 +27,17 @@ const arrayToMatrix = (arr: BingoItem[], cols: number): BingoItem[][] => {
     return matrix
 }
 
+const boardSize = {
+    minRows: 2,
+    maxRows: 10,
+    minCols: 2,
+    maxCols: 10,
+    defaultRows: 5,
+    defaultCols: 5
+}
+
 export const BingoBlockService = {
     getInitialArray,
     arrayToMatrix,
+    boardSize,
 }
