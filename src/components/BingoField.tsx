@@ -24,7 +24,7 @@ export default function BingoField() {
                 throw new Error("Item Not Found")
             }
 
-            chosenItem.content = "changed!"
+            chosenItem.isEditing = true
         })
     }
 
@@ -56,9 +56,51 @@ export default function BingoField() {
         setSwapBuffer(null)
     }
 
+
+    const handleKeyUp = (block: BingoItem, key: KeyboardEvent["key"]) => {
+        if (key === "Enter") {
+            updateItems(draft => {
+                const chosenItem = draft.find(item => item.key === block.key)
+    
+                if (!chosenItem) {
+                    throw new Error("Item Not Found")
+                }
+    
+                chosenItem.isEditing = false
+            })
+        }
+    }
+
+    const handleEdit = (block: BingoItem, val: string) => {
+        updateItems(draft => {
+            const chosenItem = draft.find(item => item.key === block.key)
+
+            if (!chosenItem) {
+                throw new Error("Item Not Found")
+            }
+
+            chosenItem.content = val
+        })
+    }
+
     const getCols = (row: BingoItem[]) => {
         return row.map((block) => {
-            const {key, content} = block
+            const {key, content, isEditing} = block
+
+            if (isEditing) {
+                return <BingoBlock
+                    key={key}
+                    onClick={() => handleClick(block)}
+                    onSwap={() => handleSwap(block)}
+                >
+                    <input
+                        value={content}
+                        onKeyUp={(e) => handleKeyUp(block, e.key)}
+                        onChange={(e) => handleEdit(block, e.target.value)}
+                    />
+                </ BingoBlock>
+            }
+
             return <BingoBlock
                 key={key}
                 onClick={() => handleClick(block)}

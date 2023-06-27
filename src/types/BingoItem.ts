@@ -4,4 +4,5 @@ export type BingoItem = {
     xCoord?: number;
     yCoord?: number;
     index?: number;
+    isEditing?: boolean;
 }
