@@ -2,7 +2,7 @@ import BingoBlock from '@/components/BingoBlock'
 import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, DragEvent } from 'react';
 import { useImmer } from 'use-immer';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
@@ -83,6 +83,41 @@ export default function BingoField() {
         })
     }
 
+    const handleDragStart = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+        ev.dataTransfer.setData("text/plain", block.key);
+        ev.dataTransfer.effectAllowed = "move";
+    }
+
+    const handleDragOver = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+    }
+
+    const handleDrop = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+        ev.preventDefault();
+        const prevKey = ev.dataTransfer.getData("text/plain");
+        const currentKey = block.key
+
+        updateItems(draft => {
+            const prevIndex = draft.findIndex(item => item.key === prevKey)
+
+            const prevItem = draft.find(item => item.key === prevKey)
+
+            if (!prevItem) {
+                throw new Error("Item Not Found")
+            }
+
+            const prevItemCopy = {...prevItem}
+
+            draft.splice(prevIndex, 1)
+
+            const currentIndex = draft.findIndex(item => item.key === currentKey)
+
+            draft.splice(currentIndex, 0, prevItemCopy);
+        })
+    }
+
+
     const getCols = (row: BingoItem[]) => {
         return row.map((block) => {
             const {key, content, isEditing} = block
@@ -92,6 +127,9 @@ export default function BingoField() {
                     key={key}
                     onClick={() => handleClick(block)}
                     onSwap={() => handleSwap(block)}
+                    onDragStart={(ev) => handleDragStart(ev, block)}
+                    onDragOver={(ev) => handleDragOver(ev, block)}
+                    onDrop={(ev) => handleDrop(ev, block)}
                 >
                     <input
                         value={content}
@@ -105,6 +143,9 @@ export default function BingoField() {
                 key={key}
                 onClick={() => handleClick(block)}
                 onSwap={() => handleSwap(block)}
+                onDragStart={(ev) => handleDragStart(ev, block)}
+                onDragOver={(ev) => handleDragOver(ev, block)}
+                onDrop={(ev) => handleDrop(ev, block)}
             >
                 {content}
             </ BingoBlock>
