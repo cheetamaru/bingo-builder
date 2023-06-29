@@ -117,44 +117,42 @@ export default function BingoField() {
         })
     }
 
+    const getBlockContent = (block: BingoItem) => {
+        const { content, isEditing } = block
+
+        if (!isEditing) {
+            return <>
+                {content}
+            </>
+        }
+
+        return <>
+            <input
+                value={content}
+                onKeyUp={(e) => handleKeyUp(block, e.key)}
+                onChange={(e) => handleEdit(block, e.target.value)}
+            />
+        </>
+    }
 
     const getCols = (row: BingoItem[]) => {
         return row.map((block) => {
-            const {key, content, isEditing} = block
-
-            if (isEditing) {
-                return <BingoBlock
-                    key={key}
-                    onClick={() => handleClick(block)}
-                    onSwap={() => handleSwap(block)}
-                    onDragStart={(ev) => handleDragStart(ev, block)}
-                    onDragOver={(ev) => handleDragOver(ev, block)}
-                    onDrop={(ev) => handleDrop(ev, block)}
-                >
-                    <input
-                        value={content}
-                        onKeyUp={(e) => handleKeyUp(block, e.key)}
-                        onChange={(e) => handleEdit(block, e.target.value)}
-                    />
-                </ BingoBlock>
-            }
-
             return <BingoBlock
-                key={key}
+                key={block.key}
                 onClick={() => handleClick(block)}
                 onSwap={() => handleSwap(block)}
                 onDragStart={(ev) => handleDragStart(ev, block)}
                 onDragOver={(ev) => handleDragOver(ev, block)}
                 onDrop={(ev) => handleDrop(ev, block)}
             >
-                {content}
+                {getBlockContent(block)}
             </ BingoBlock>
         })
     }
 
     const matrix = useMemo(() => arrayToMatrix(items, cols), [items, cols]) 
 
-    const getEmptyBlocks = () => {
+    const getBlocks = () => {
         return matrix.map((row, rowIndex) => {
             return <div key={rowIndex}>
                 {getCols(row)}
@@ -207,6 +205,6 @@ export default function BingoField() {
             />
             <button onClick={handleShuffle}>Shuffle</button>
         </div>
-        {getEmptyBlocks()}
+        {getBlocks()}
     </>
 }
