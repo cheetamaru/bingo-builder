@@ -2,7 +2,7 @@ import BingoBlock from '@/components/BingoBlock'
 import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
-import { useMemo, useState, DragEvent } from 'react';
+import { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmer } from 'use-immer';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
@@ -164,8 +164,8 @@ export default function BingoField() {
         updateItems(getShuffledArray(items))
     }
 
-    const handleColInput = (val: string) => {
-        const newCols = Number(val)
+    const handleColInput = (ev: ChangeEvent<HTMLInputElement>) => {
+        const newCols = Number(ev.target.value)
 
         if (newCols >=boardSize.minCols && newCols <= boardSize.maxCols) {
             setCols(newCols)
@@ -174,8 +174,8 @@ export default function BingoField() {
         }
     }
 
-    const handleRowInput = (val: string) => {
-        const newRows = Number(val)
+    const handleRowInput = (ev: ChangeEvent<HTMLInputElement>) => {
+        const newRows = Number(ev.target.value)
 
         if (newRows >=boardSize.minRows && newRows <= boardSize.maxRows) {
             setRows(newRows)
@@ -193,7 +193,7 @@ export default function BingoField() {
                 min={boardSize.minCols}
                 max={boardSize.maxCols}
                 value={cols}
-                onChange={(e) => handleColInput(e.target.value)}
+                onChange={handleColInput}
             />
             x
             <input
@@ -201,7 +201,7 @@ export default function BingoField() {
                 min={boardSize.minRows}
                 max={boardSize.maxRows}
                 value={rows}
-                onChange={(e) => handleRowInput(e.target.value)}
+                onChange={handleRowInput}
             />
             <button onClick={handleShuffle}>Shuffle</button>
         </div>
