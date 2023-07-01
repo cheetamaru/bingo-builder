@@ -2,7 +2,7 @@ import BingoBlock from '@/components/BingoBlock'
 import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
-import { useMemo, useState, DragEvent, ChangeEvent } from 'react';
+import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmer } from 'use-immer';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
@@ -58,7 +58,7 @@ export default function BingoField() {
 
 
     const handleKeyUp = (block: BingoItem, key: KeyboardEvent["key"]) => {
-        if (key === "Enter") {
+        if (key === "Enter" || key === "Escape") {
             updateItems(draft => {
                 const chosenItem = draft.find(item => item.key === block.key)
     

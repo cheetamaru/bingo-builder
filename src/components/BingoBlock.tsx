@@ -1,4 +1,4 @@
-import { ReactNode, DragEvent } from "react";
+import React, { ReactNode, DragEvent } from "react";
 import styles from './BingoBlock.module.css'
 
 interface Props {
