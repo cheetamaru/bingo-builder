@@ -4,6 +4,7 @@ import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmer } from 'use-immer';
+import styles from './BingoField.module.css'
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
@@ -154,7 +155,7 @@ export default function BingoField() {
 
     const getBlocks = () => {
         return matrix.map((row, rowIndex) => {
-            return <div key={rowIndex}>
+            return <div className={styles["bingo-field__row"]} key={rowIndex}>
                 {getCols(row)}
             </div>
         })
@@ -205,6 +206,8 @@ export default function BingoField() {
             />
             <button onClick={handleShuffle}>Shuffle</button>
         </div>
-        {getBlocks()}
+        <div className={styles["bingo-field"]}>
+            {getBlocks()}
+        </div>
     </>
 }

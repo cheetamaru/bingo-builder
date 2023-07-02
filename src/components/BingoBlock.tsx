@@ -20,9 +20,12 @@ export default function BingoBlock({ onClick, children, onSwap, onDragOver, onDr
           onDragOver={onDragOver}
           onDrop={onDrop}
         >
-          <button onClick={onClick}>
+          <div
+            className={styles["bingo-block__content"]}
+            onClick={onClick}
+          >
               {children}
-          </button>
+          </div>
           <button onClick={onSwap}>↔</button>
         </div>
       </>

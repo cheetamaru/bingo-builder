@@ -1,0 +1,7 @@
+.bingo-field {
+    display: block;
+}
+
+.bingo-field__row {
+    display: flex;
+}
