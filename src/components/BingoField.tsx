@@ -1,4 +1,5 @@
 import BingoBlock from '@/components/BingoBlock'
+import BingoFieldShuffleButton from './BingoFieldShuffleButton';
 import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoItem } from '@/types';
 import { getShuffledArray } from '@/utils';
@@ -185,7 +186,6 @@ export default function BingoField() {
         }
     }
 
-
     return <>
         <div>
             Board size:
@@ -204,7 +204,7 @@ export default function BingoField() {
                 value={rows}
                 onChange={handleRowInput}
             />
-            <button onClick={handleShuffle}>Shuffle</button>
+            <BingoFieldShuffleButton onClick={handleShuffle} />
         </div>
         <div className={styles["bingo-field"]}>
             {getBlocks()}
