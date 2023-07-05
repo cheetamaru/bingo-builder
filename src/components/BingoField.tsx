@@ -6,6 +6,7 @@ import { getShuffledArray } from '@/utils';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './BingoField.module.css'
+import BingoFieldSizeSettings from './BingoFieldSizeSettings';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
@@ -168,41 +169,25 @@ export default function BingoField() {
 
     const handleColInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newCols = Number(ev.target.value)
-
-        if (newCols >=boardSize.minCols && newCols <= boardSize.maxCols) {
-            setCols(newCols)
-            const total = rows * newCols;
-            updateItems(getInitialArray(total))
-        }
+        setCols(newCols)
+        const total = rows * newCols;
+        updateItems(getInitialArray(total))
     }
 
     const handleRowInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newRows = Number(ev.target.value)
-
-        if (newRows >=boardSize.minRows && newRows <= boardSize.maxRows) {
-            setRows(newRows)
-            const total = newRows * cols;
-            updateItems(getInitialArray(total))
-        }
+        setRows(newRows)
+        const total = newRows * cols;
+        updateItems(getInitialArray(total))
     }
 
     return <>
         <div>
-            Board size:
-            <input
-                type="number"
-                min={boardSize.minCols}
-                max={boardSize.maxCols}
-                value={cols}
-                onChange={handleColInput}
-            />
-            x
-            <input
-                type="number"
-                min={boardSize.minRows}
-                max={boardSize.maxRows}
-                value={rows}
-                onChange={handleRowInput}
+            <BingoFieldSizeSettings
+                cols={cols}
+                rows={rows}
+                onColInput={handleColInput}
+                onRowInput={handleRowInput}
             />
             <BingoFieldShuffleButton onClick={handleShuffle} />
         </div>
