@@ -1,12 +1,12 @@
 import BingoBlock from '@/components/BingoBlock'
 import BingoFieldShuffleButton from './BingoFieldShuffleButton';
 import { BingoBlockService } from '@/services/BingoBlockService';
-import { BingoItem } from '@/types';
-import { getShuffledArray } from '@/utils';
+import { BingoFieldReducerAction, BingoItem } from '@/types';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
-import { useImmer } from 'use-immer';
+import { useImmerReducer } from 'use-immer';
 import styles from './BingoField.module.css'
 import BingoFieldSizeSettings from './BingoFieldSizeSettings';
+import { bingoFieldReducer } from '@/reducers';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
@@ -16,18 +16,13 @@ export default function BingoField() {
 
     const total = rows * cols;
 
-    const [items, updateItems] =  useImmer<BingoItem[]>(getInitialArray(total))
+    const [items, dispatch] = useImmerReducer<BingoItem[], BingoFieldReducerAction>(bingoFieldReducer, getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
     const handleClick = (bingoItem: BingoItem) => {
-        updateItems(draft => {
-            const chosenItem = draft.find(item => item.index === bingoItem.index)
-
-            if (!chosenItem) {
-                throw new Error("Item Not Found")
-            }
-
-            chosenItem.isEditing = true
+        dispatch({
+            type: "startEdit",
+            bingoItem
         })
     }
 
@@ -38,51 +33,30 @@ export default function BingoField() {
             return
         }
 
-        updateItems(draft => {
-            const prevItem = draft.find(item => item.key === swapBuffer.key)
-
-            if (!prevItem) {
-                throw new Error("Buffered Item Not Found")
-            }
-
-            prevItem.content = bingoItem.content
-
-            const chosenItem = draft.find(item => item.key === bingoItem.key)
-
-            if (!chosenItem) {
-                throw new Error("Item Not Found")
-            }
-
-            chosenItem.content = swapBuffer.content
+        dispatch({
+            type: "swap",
+            bingoItem,
+            swapBuffer
         })
 
         setSwapBuffer(null)
     }
 
 
-    const handleKeyUp = (block: BingoItem, key: KeyboardEvent["key"]) => {
+    const handleKeyUp = (bingoItem: BingoItem, key: KeyboardEvent["key"]) => {
         if (key === "Enter" || key === "Escape") {
-            updateItems(draft => {
-                const chosenItem = draft.find(item => item.key === block.key)
-    
-                if (!chosenItem) {
-                    throw new Error("Item Not Found")
-                }
-    
-                chosenItem.isEditing = false
+            dispatch({
+                type: "stopEdit",
+                bingoItem
             })
         }
     }
 
-    const handleEdit = (block: BingoItem, val: string) => {
-        updateItems(draft => {
-            const chosenItem = draft.find(item => item.key === block.key)
-
-            if (!chosenItem) {
-                throw new Error("Item Not Found")
-            }
-
-            chosenItem.content = val
+    const handleEdit = (bingoItem: BingoItem, val: string) => {
+        dispatch({
+            type: "edit",
+            bingoItem,
+            inputedValue: val
         })
     }
 
@@ -98,26 +72,26 @@ export default function BingoField() {
 
     const handleDrop = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
         ev.preventDefault();
-        const prevKey = ev.dataTransfer.getData("text/plain");
-        const currentKey = block.key
+        // const prevKey = ev.dataTransfer.getData("text/plain");
+        // const currentKey = block.key
 
-        updateItems(draft => {
-            const prevIndex = draft.findIndex(item => item.key === prevKey)
+        // updateItems(draft => {
+        //     const prevIndex = draft.findIndex(item => item.key === prevKey)
 
-            const prevItem = draft.find(item => item.key === prevKey)
+        //     const prevItem = draft.find(item => item.key === prevKey)
 
-            if (!prevItem) {
-                throw new Error("Item Not Found")
-            }
+        //     if (!prevItem) {
+        //         throw new Error("Item Not Found")
+        //     }
 
-            const prevItemCopy = {...prevItem}
+        //     const prevItemCopy = {...prevItem}
 
-            draft.splice(prevIndex, 1)
+        //     draft.splice(prevIndex, 1)
 
-            const currentIndex = draft.findIndex(item => item.key === currentKey)
+        //     const currentIndex = draft.findIndex(item => item.key === currentKey)
 
-            draft.splice(currentIndex, 0, prevItemCopy);
-        })
+        //     draft.splice(currentIndex, 0, prevItemCopy);
+        // })
     }
 
     const getBlockContent = (block: BingoItem) => {
@@ -164,21 +138,23 @@ export default function BingoField() {
     }
 
     const handleShuffle = () => {
-        updateItems(getShuffledArray(items))
+        dispatch({
+            type: "shuffle"
+        })
     }
 
     const handleColInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newCols = Number(ev.target.value)
         setCols(newCols)
         const total = rows * newCols;
-        updateItems(getInitialArray(total))
+        // updateItems(getInitialArray(total))
     }
 
     const handleRowInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newRows = Number(ev.target.value)
         setRows(newRows)
         const total = newRows * cols;
-        updateItems(getInitialArray(total))
+        // updateItems(getInitialArray(total))
     }
 
     return <>
