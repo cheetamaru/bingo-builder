@@ -1,7 +1,7 @@
 import BingoBlock from '@/components/BingoBlock'
 import BingoFieldShuffleButton from './BingoFieldShuffleButton';
 import { BingoBlockService } from '@/services/BingoBlockService';
-import { BingoFieldReducerAction, BingoItem } from '@/types';
+import { BingoFieldReducerActions, BingoItem } from '@/types';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmerReducer } from 'use-immer';
 import styles from './BingoField.module.css'
@@ -16,7 +16,7 @@ export default function BingoField() {
 
     const total = rows * cols;
 
-    const [items, dispatch] = useImmerReducer<BingoItem[], BingoFieldReducerAction>(bingoFieldReducer, getInitialArray(total))
+    const [items, dispatch] = useImmerReducer<BingoItem[], BingoFieldReducerActions>(bingoFieldReducer, getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
     const handleClick = (bingoItem: BingoItem) => {

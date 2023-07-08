@@ -1,10 +1,34 @@
 import { BingoItem } from "./BingoItem";
 
-export type BingoFieldReducerActionType = "startEdit" | "stopEdit" | "swap" | "edit" | "shuffle"
-
-export type BingoFieldReducerAction = {
-    type: BingoFieldReducerActionType;
-    bingoItem?: BingoItem;
-    swapBuffer?: BingoItem;
-    inputedValue?: string;
+export type BingoFieldStartEditAction = {
+    type: "startEdit"
+    bingoItem: BingoItem;
 }
+
+export type BingoFieldStopEditAction = {
+    type: "stopEdit";
+    bingoItem: BingoItem;
+}
+
+export type BingoFieldEditAction = {
+    type: "edit";
+    bingoItem: BingoItem;
+    inputedValue: string;
+}
+
+export type BingoFieldSwapAction = {
+    type: "swap";
+    bingoItem: BingoItem;
+    swapBuffer: BingoItem;
+}
+
+export type BingoFieldShuffleAction = {
+    type: "shuffle";
+}
+
+export type BingoFieldReducerActions =
+    BingoFieldStartEditAction | 
+    BingoFieldStopEditAction |
+    BingoFieldEditAction |
+    BingoFieldSwapAction |
+    BingoFieldShuffleAction;
