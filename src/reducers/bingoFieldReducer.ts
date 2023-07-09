@@ -1,5 +1,8 @@
-import { BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
+import { BingoBlockService } from "@/services/BingoBlockService"
+import { BingoFieldChangeSizeAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
 import { shuffleArray } from "@/utils"
+
+const { getInitialArray } = BingoBlockService;
 
 export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerActions) => {
     switch(action.type) {
@@ -22,6 +25,9 @@ export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerA
         case "shuffle": {
             shuffleArray(draft)
             break;
+        }
+        case "changeSize": {
+            return performChangeSize(draft, action)
         }
         default: {
             throw Error('Unknown action');
@@ -83,4 +89,8 @@ const performSwap = (draft: BingoItem[], action: BingoFieldSwapAction) => {
     }
 
     chosenItem.content = swapBuffer?.content || ""
+}
+
+const performChangeSize = (_: BingoItem[], action: BingoFieldChangeSizeAction) => {
+    return getInitialArray(action.newTotal)
 }

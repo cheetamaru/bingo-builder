@@ -26,9 +26,15 @@ export type BingoFieldShuffleAction = {
     type: "shuffle";
 }
 
+export type BingoFieldChangeSizeAction = {
+    type: "changeSize";
+    newTotal: number;
+}
+
 export type BingoFieldReducerActions =
     BingoFieldStartEditAction | 
     BingoFieldStopEditAction |
     BingoFieldEditAction |
     BingoFieldSwapAction |
-    BingoFieldShuffleAction;
+    BingoFieldShuffleAction |
+    BingoFieldChangeSizeAction;

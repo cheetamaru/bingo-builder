@@ -147,14 +147,20 @@ export default function BingoField() {
         const newCols = Number(ev.target.value)
         setCols(newCols)
         const total = rows * newCols;
-        // updateItems(getInitialArray(total))
+        dispatch({
+            type: "changeSize",
+            newTotal: total
+        })
     }
 
     const handleRowInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newRows = Number(ev.target.value)
         setRows(newRows)
         const total = newRows * cols;
-        // updateItems(getInitialArray(total))
+        dispatch({
+            type: "changeSize",
+            newTotal: total
+        })
     }
 
     return <>
