@@ -70,28 +70,15 @@ export default function BingoField() {
         ev.dataTransfer.dropEffect = "move";
     }
 
-    const handleDrop = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+    const handleDrop = (ev: DragEvent<HTMLElement>, bingoItem: BingoItem) => {
         ev.preventDefault();
-        // const prevKey = ev.dataTransfer.getData("text/plain");
-        // const currentKey = block.key
+        const prevKey = ev.dataTransfer.getData("text/plain");
 
-        // updateItems(draft => {
-        //     const prevIndex = draft.findIndex(item => item.key === prevKey)
-
-        //     const prevItem = draft.find(item => item.key === prevKey)
-
-        //     if (!prevItem) {
-        //         throw new Error("Item Not Found")
-        //     }
-
-        //     const prevItemCopy = {...prevItem}
-
-        //     draft.splice(prevIndex, 1)
-
-        //     const currentIndex = draft.findIndex(item => item.key === currentKey)
-
-        //     draft.splice(currentIndex, 0, prevItemCopy);
-        // })
+        dispatch({
+            type: "drop",
+            bingoItem,
+            prevKey
+        })
     }
 
     const getBlockContent = (block: BingoItem) => {

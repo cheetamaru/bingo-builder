@@ -1,5 +1,5 @@
 import { BingoBlockService } from "@/services/BingoBlockService"
-import { BingoFieldChangeSizeAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
+import { BingoFieldChangeSizeAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
 import { shuffleArray } from "@/utils"
 
 const { getInitialArray } = BingoBlockService;
@@ -28,6 +28,10 @@ export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerA
         }
         case "changeSize": {
             return performChangeSize(draft, action)
+        }
+        case "drop": {
+            performDrop(draft, action)
+            break;
         }
         default: {
             throw Error('Unknown action');
@@ -93,4 +97,25 @@ const performSwap = (draft: BingoItem[], action: BingoFieldSwapAction) => {
 
 const performChangeSize = (_: BingoItem[], action: BingoFieldChangeSizeAction) => {
     return getInitialArray(action.newTotal)
+}
+
+const performDrop = (draft: BingoItem[], action: BingoFieldDropAction) => {
+    const currentKey = action.bingoItem.key
+    const prevKey = action.prevKey
+
+    const prevIndex = draft.findIndex(item => item.key === prevKey)
+
+    const prevItem = draft.find(item => item.key === prevKey)
+
+    if (!prevItem) {
+        throw new Error("Item Not Found")
+    }
+
+    const prevItemCopy = {...prevItem}
+
+    draft.splice(prevIndex, 1)
+
+    const currentIndex = draft.findIndex(item => item.key === currentKey)
+
+    draft.splice(currentIndex, 0, prevItemCopy);
 }

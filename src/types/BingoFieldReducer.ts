@@ -31,10 +31,17 @@ export type BingoFieldChangeSizeAction = {
     newTotal: number;
 }
 
+export type BingoFieldDropAction = {
+    type: "drop";
+    bingoItem: BingoItem;
+    prevKey: string;
+}
+
 export type BingoFieldReducerActions =
     BingoFieldStartEditAction | 
     BingoFieldStopEditAction |
     BingoFieldEditAction |
     BingoFieldSwapAction |
     BingoFieldShuffleAction |
-    BingoFieldChangeSizeAction;
+    BingoFieldChangeSizeAction |
+    BingoFieldDropAction;
