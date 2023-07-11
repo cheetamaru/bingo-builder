@@ -9,6 +9,10 @@
     height: 100px;
 }
 
+.bingo-block--swapping {
+    background-color: aquamarine;
+}
+
 .bingo-block__content {
     display: inline;
 }

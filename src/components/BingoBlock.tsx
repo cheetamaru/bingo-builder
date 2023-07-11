@@ -7,14 +7,17 @@ interface Props {
     onSwap: () => void;
     onDragStart: (e: DragEvent<HTMLElement>) => void;
     onDragOver: (e: DragEvent<HTMLElement>) => void;
-    onDrop: (e: DragEvent<HTMLElement>) => void; 
+    onDrop: (e: DragEvent<HTMLElement>) => void;
+    isSwapping?: boolean;
 }
 
-export default function BingoBlock({ onClick, children, onSwap, onDragOver, onDrop, onDragStart }: Props) {
+export default function BingoBlock({ onClick, children, onSwap, onDragOver, onDrop, onDragStart, isSwapping }: Props) {
+    const bingoBlockClasses = `${styles["bingo-block"]} ${isSwapping ? styles["bingo-block--swapping"] : ""}`
+
     return (
       <>
         <div
-          className={styles["bingo-block"]}
+          className={bingoBlockClasses}
           draggable
           onDragStart={onDragStart}
           onDragOver={onDragOver}

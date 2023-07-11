@@ -99,6 +99,10 @@ export default function BingoField() {
         </>
     }
 
+    const getIsSwapping = (bingoItem: BingoItem) => {
+        return bingoItem.key === swapBuffer?.key
+    }
+
     const getCols = (row: BingoItem[]) => {
         return row.map((block) => {
             return <BingoBlock
@@ -108,6 +112,7 @@ export default function BingoField() {
                 onDragStart={(ev) => handleDragStart(ev, block)}
                 onDragOver={(ev) => handleDragOver(ev, block)}
                 onDrop={(ev) => handleDrop(ev, block)}
+                isSwapping={getIsSwapping(block)}
             >
                 {getBlockContent(block)}
             </ BingoBlock>
