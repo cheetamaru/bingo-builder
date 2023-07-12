@@ -19,7 +19,7 @@ export default function BingoField() {
     const [items, dispatch] = useImmerReducer<BingoItem[], BingoFieldReducerActions>(bingoFieldReducer, getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
 
-    const handleClick = (bingoItem: BingoItem) => {
+    const startEdit = (bingoItem: BingoItem) => {
         dispatch({
             type: "startEdit",
             bingoItem
@@ -42,13 +42,16 @@ export default function BingoField() {
         setSwapBuffer(null)
     }
 
+    const stopEdit = (bingoItem: BingoItem) => {
+        dispatch({
+            type: "stopEdit",
+            bingoItem
+        })
+    }
 
     const handleKeyUp = (bingoItem: BingoItem, key: KeyboardEvent["key"]) => {
         if (key === "Enter" || key === "Escape") {
-            dispatch({
-                type: "stopEdit",
-                bingoItem
-            })
+           stopEdit(bingoItem)
         }
     }
 
@@ -95,6 +98,7 @@ export default function BingoField() {
                 value={content}
                 onKeyUp={(e) => handleKeyUp(block, e.key)}
                 onChange={(e) => handleEdit(block, e.target.value)}
+                onBlur={() => stopEdit(block)}
             />
         </>
     }
@@ -107,12 +111,12 @@ export default function BingoField() {
         return row.map((block) => {
             return <BingoBlock
                 key={block.key}
-                onClick={() => handleClick(block)}
                 onSwap={() => handleSwap(block)}
                 onDragStart={(ev) => handleDragStart(ev, block)}
                 onDragOver={(ev) => handleDragOver(ev, block)}
                 onDrop={(ev) => handleDrop(ev, block)}
                 isSwapping={getIsSwapping(block)}
+                onEdit={() => startEdit(block)}
             >
                 {getBlockContent(block)}
             </ BingoBlock>

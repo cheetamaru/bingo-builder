@@ -3,15 +3,16 @@ import styles from './BingoBlock.module.css'
 
 interface Props {
     children: ReactNode;
-    onClick: () => void;
     onSwap: () => void;
+    onEdit: () => void;
     onDragStart: (e: DragEvent<HTMLElement>) => void;
     onDragOver: (e: DragEvent<HTMLElement>) => void;
     onDrop: (e: DragEvent<HTMLElement>) => void;
+    onClick?: () => void;
     isSwapping?: boolean;
 }
 
-export default function BingoBlock({ onClick, children, onSwap, onDragOver, onDrop, onDragStart, isSwapping }: Props) {
+export default function BingoBlock({ onClick, children, onSwap, onEdit, onDragOver, onDrop, onDragStart, isSwapping }: Props) {
     const bingoBlockClasses = `${styles["bingo-block"]} ${isSwapping ? styles["bingo-block--swapping"] : ""}`
 
     return (
@@ -25,6 +26,7 @@ export default function BingoBlock({ onClick, children, onSwap, onDragOver, onDr
         >
           <div className={styles["bingo-block__tools"]}>
             <button onClick={onSwap}>↔</button>
+            <button onClick={onEdit}>🛠️</button>
           </div>
           <div
             className={styles["bingo-block__content"]}
