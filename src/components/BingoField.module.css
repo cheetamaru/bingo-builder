@@ -5,3 +5,7 @@
 .bingo-field__row {
     display: flex;
 }
+
+.bingo-field__edit-input {
+    width: 100%;
+}

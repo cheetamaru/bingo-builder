@@ -95,6 +95,8 @@ export default function BingoField() {
 
         return <>
             <input
+                autoFocus
+                className={styles["bingo-field__edit-input"]}
                 value={content}
                 onKeyUp={(e) => handleKeyUp(block, e.key)}
                 onChange={(e) => handleEdit(block, e.target.value)}
