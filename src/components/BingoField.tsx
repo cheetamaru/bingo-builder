@@ -73,6 +73,16 @@ export default function BingoField() {
         ev.dataTransfer.dropEffect = "move";
     }
 
+    const handleDragEnter = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+    }
+
+    const handleDragLeave = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+    }
+
     const handleDrop = (ev: DragEvent<HTMLElement>, bingoItem: BingoItem) => {
         ev.preventDefault();
         const prevKey = ev.dataTransfer.getData("text/plain");
@@ -116,6 +126,8 @@ export default function BingoField() {
                 onSwap={() => handleSwap(block)}
                 onDragStart={(ev) => handleDragStart(ev, block)}
                 onDragOver={(ev) => handleDragOver(ev, block)}
+                onDragEnter={(ev) => handleDragEnter(ev, block)}
+                onDragLeave={(ev) => handleDragLeave(ev, block)}
                 onDrop={(ev) => handleDrop(ev, block)}
                 isSwapping={getIsSwapping(block)}
                 onEdit={() => startEdit(block)}
