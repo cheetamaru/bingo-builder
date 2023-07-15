@@ -1,5 +1,5 @@
 import { BingoBlockService } from "@/services/BingoBlockService"
-import { BingoFieldChangeSizeAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
+import { BingoFieldChangeSizeAction, BingoFieldDragStartAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
 import { shuffleArray } from "@/utils"
 
 const { getInitialArray } = BingoBlockService;
@@ -31,6 +31,10 @@ export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerA
         }
         case "drop": {
             performDrop(draft, action)
+            break;
+        }
+        case "dragStart":{
+            performDragStart(draft, action)
             break;
         }
         default: {
@@ -118,4 +122,15 @@ const performDrop = (draft: BingoItem[], action: BingoFieldDropAction) => {
     const currentIndex = draft.findIndex(item => item.key === currentKey)
 
     draft.splice(currentIndex, 0, prevItemCopy);
+}
+
+const performDragStart = (draft: BingoItem[], action: BingoFieldDragStartAction) => {
+    const draggedKey = action.bingoItem.key
+
+    const draggedIndex = draft.findIndex(item => item.key === draggedKey)
+
+    const dummyItem: BingoItem = {
+        key: "dummy",
+        content: "dummy"
+    }
 }

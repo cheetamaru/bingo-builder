@@ -18,6 +18,7 @@ export default function BingoField() {
 
     const [items, dispatch] = useImmerReducer<BingoItem[], BingoFieldReducerActions>(bingoFieldReducer, getInitialArray(total))
     const [swapBuffer, setSwapBuffer] = useState<BingoItem | null>(null)
+    const [dragBuffer, setDragBuffer] = useState<BingoItem | null>(null)
 
     const startEdit = (bingoItem: BingoItem) => {
         dispatch({
@@ -63,8 +64,13 @@ export default function BingoField() {
         })
     }
 
-    const handleDragStart = (ev: DragEvent<HTMLElement>, block: BingoItem) => {
-        ev.dataTransfer.setData("text/plain", block.key);
+    const handleDragStart = (ev: DragEvent<HTMLElement>, bingoItem: BingoItem) => {
+        ev.dataTransfer.setData("text/plain", JSON.stringify(bingoItem));
+        setDragBuffer({...bingoItem})
+        dispatch({
+            type: "dragStart",
+            bingoItem
+        })
         ev.dataTransfer.effectAllowed = "move";
     }
 
@@ -85,13 +91,15 @@ export default function BingoField() {
 
     const handleDrop = (ev: DragEvent<HTMLElement>, bingoItem: BingoItem) => {
         ev.preventDefault();
-        const prevKey = ev.dataTransfer.getData("text/plain");
+        const prevItem = JSON.parse(ev.dataTransfer.getData("text/plain"));
 
+        console.log("prevItem", prevItem)
         dispatch({
             type: "drop",
             bingoItem,
-            prevKey
+            prevKey: prevItem.key
         })
+        setDragBuffer(null)
     }
 
     const getBlockContent = (block: BingoItem) => {
