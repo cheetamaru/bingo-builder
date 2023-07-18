@@ -1,7 +1,7 @@
 import BingoBlock from '@/components/BingoBlock'
 import BingoFieldShuffleButton from './BingoFieldShuffleButton';
 import { BingoBlockService } from '@/services/BingoBlockService';
-import { BingoFieldReducerActions, BingoItem } from '@/types';
+import { BingoFieldMode, BingoFieldReducerActions, BingoItem } from '@/types';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmerReducer } from 'use-immer';
 import styles from './BingoField.module.css'
@@ -13,6 +13,7 @@ const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 export default function BingoField() {
     const [rows, setRows] = useState<number>(boardSize.defaultRows)
     const [cols, setCols] = useState<number>(boardSize.defaultCols)
+    const [fieldMode, setFieldMode] = useState<BingoFieldMode>("edit")
 
     const total = rows * cols;
 
@@ -102,6 +103,16 @@ export default function BingoField() {
         setDragBuffer(null)
     }
 
+    const handleModeChange = () => {
+        if (fieldMode === "edit") {
+            setFieldMode("play")
+
+            return
+        }
+
+        setFieldMode("edit")
+    }
+
     const getBlockContent = (block: BingoItem) => {
         const { content, isEditing } = block
 
@@ -131,6 +142,7 @@ export default function BingoField() {
         return row.map((block) => {
             return <BingoBlock
                 key={block.key}
+                mode={fieldMode}
                 onSwap={() => handleSwap(block)}
                 onDragStart={(ev) => handleDragStart(ev, block)}
                 onDragOver={(ev) => handleDragOver(ev, block)}
@@ -190,6 +202,7 @@ export default function BingoField() {
                 onRowInput={handleRowInput}
             />
             <BingoFieldShuffleButton onClick={handleShuffle} />
+            <button onClick={handleModeChange}>Change mode</button>
         </div>
         <div className={styles["bingo-field"]}>
             {getBlocks()}
