@@ -42,6 +42,10 @@ export type BingoFieldDragStartAction = {
     bingoItem: BingoItem;
 }
 
+export type BingoFieldMarkAction = {
+    type: "mark";
+    bingoItem: BingoItem;
+}
 
 export type BingoFieldReducerActions =
     BingoFieldStartEditAction | 
@@ -51,4 +55,5 @@ export type BingoFieldReducerActions =
     BingoFieldShuffleAction |
     BingoFieldChangeSizeAction |
     BingoFieldDropAction |
-    BingoFieldDragStartAction;
+    BingoFieldDragStartAction |
+    BingoFieldMarkAction;

@@ -14,6 +14,7 @@ interface Props {
     onDrop?: (e: DragEvent<HTMLElement>) => void;
     onClick?: () => void;
     isSwapping?: boolean;
+    isMarked?: boolean;
 }
 
 export default function BingoBlock(props: Props) {
@@ -28,10 +29,23 @@ export default function BingoBlock(props: Props) {
     onDragEnter,
     onDragLeave,
     isSwapping,
+    isMarked,
     mode
   } = props 
   
-  const bingoBlockClasses = `${styles["bingo-block"]} ${isSwapping ? styles["bingo-block--swapping"] : ""}`
+  const getBingoBlockClasses = () => {
+    const classes = [styles["bingo-block"]]
+
+    if (isSwapping) {
+      classes.push(styles["bingo-block--swapping"])
+    }
+
+    if (isMarked && mode === "play") {
+      classes.push(styles["bingo-block--marked"])
+    }
+
+    return classes.join(" ")
+  }
 
   const getTools = () => {
     if (mode === "play") {
@@ -52,18 +66,18 @@ export default function BingoBlock(props: Props) {
   return (
     <>
       <div
-        className={bingoBlockClasses}
+        className={getBingoBlockClasses()}
         draggable={isDraggable}
         onDragStart={onDragStart}
         onDragOver={onDragOver}
         onDrop={onDrop}
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
+        onClick={onClick}
       >
         {getTools()}
         <div
           className={styles["bingo-block__content"]}
-          onClick={onClick}
         >
             {children}
         </div>

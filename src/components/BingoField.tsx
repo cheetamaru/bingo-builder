@@ -113,6 +113,15 @@ export default function BingoField() {
         setFieldMode("edit")
     }
 
+    const handleClick = (bingoItem: BingoItem) => {
+        if (fieldMode === "play") {
+            dispatch({
+                type: "mark",
+                bingoItem
+            })
+        }
+    }
+
     const getBlockContent = (block: BingoItem) => {
         const { content, isEditing } = block
 
@@ -151,6 +160,8 @@ export default function BingoField() {
                 onDrop={(ev) => handleDrop(ev, block)}
                 isSwapping={getIsSwapping(block)}
                 onEdit={() => startEdit(block)}
+                onClick={() => handleClick(block)}
+                isMarked={block.isMarked}
             >
                 {getBlockContent(block)}
             </ BingoBlock>

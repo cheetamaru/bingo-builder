@@ -5,4 +5,5 @@ export type BingoItem = {
     yCoord?: number;
     index?: number;
     isEditing?: boolean;
+    isMarked?: boolean;
 }

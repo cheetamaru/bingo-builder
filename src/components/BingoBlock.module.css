@@ -13,6 +13,10 @@
     background-color: aquamarine;
 }
 
+.bingo-block--marked {
+    background-color: orange;
+}
+
 .bingo-block__content {
     display: inline;
 }

@@ -1,5 +1,5 @@
 import { BingoBlockService } from "@/services/BingoBlockService"
-import { BingoFieldChangeSizeAction, BingoFieldDragStartAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
+import { BingoFieldChangeSizeAction, BingoFieldDragStartAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldMarkAction, BingoFieldReducerActions, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
 import { shuffleArray } from "@/utils"
 
 const { getInitialArray } = BingoBlockService;
@@ -35,6 +35,10 @@ export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerA
         }
         case "dragStart":{
             performDragStart(draft, action)
+            break;
+        }
+        case "mark": {
+            performMark(draft, action)
             break;
         }
         default: {
@@ -133,4 +137,18 @@ const performDragStart = (draft: BingoItem[], action: BingoFieldDragStartAction)
         key: "dummy",
         content: "dummy"
     }
+}
+
+const performMark = (draft: BingoItem[], action: BingoFieldMarkAction) => {
+    const item = draft.find((el) => el.key === action.bingoItem.key)
+
+    if (!item) {
+        throw new Error("Item Not Found")
+    }
+
+    if (item.isMarked === undefined) {
+        item.isMarked = false
+    }
+
+    item.isMarked = !item.isMarked
 }
