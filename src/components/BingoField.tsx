@@ -184,6 +184,12 @@ export default function BingoField() {
         })
     }
 
+    const habdleResetMarkings = () => {
+        dispatch({
+            type: "resetMarkings"
+        })
+    }
+
     const handleColInput = (ev: ChangeEvent<HTMLInputElement>) => {
         const newCols = Number(ev.target.value)
         setCols(newCols)
@@ -204,16 +210,37 @@ export default function BingoField() {
         })
     }
 
+    const getEditSettings = () => {
+        if (fieldMode === "edit") {
+            return <>
+                <BingoFieldSizeSettings
+                    cols={cols}
+                    rows={rows}
+                    onColInput={handleColInput}
+                    onRowInput={handleRowInput}
+                />
+                <BingoFieldShuffleButton onClick={handleShuffle} />
+            </>
+        }
+    }
+
+    const getPlaySettings = () => {
+        if (fieldMode === "play") {
+            return <>
+                <button onClick={habdleResetMarkings}>Reset markings</button>
+            </>
+        }
+    }
+
     return <>
         <div>
-            <BingoFieldSizeSettings
-                cols={cols}
-                rows={rows}
-                onColInput={handleColInput}
-                onRowInput={handleRowInput}
-            />
-            <BingoFieldShuffleButton onClick={handleShuffle} />
+            <div>
+                {getEditSettings()}
+            </div>
             <button onClick={handleModeChange}>Change mode</button>
+            <div>
+                {getPlaySettings()}
+            </div>
         </div>
         <div className={styles["bingo-field"]}>
             {getBlocks()}
