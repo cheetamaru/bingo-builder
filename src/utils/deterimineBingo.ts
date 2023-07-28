@@ -21,13 +21,22 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         rowsBucket.push(row.map((el, ind) => ({ isMarked: el, coord: [ind, rowIndex] })))
 
         row.forEach((cell, colIndex) => {
+            if (!colsBucket[colIndex]) {
+                colsBucket[colIndex] = []
+            }
             colsBucket[colIndex].push({isMarked: cell, coord: [colIndex, rowIndex]})
 
             if (rowIndex === colIndex) {
+                if (!diagBucket[0]) {
+                    diagBucket[0] = []
+                }
                 diagBucket[0].push({isMarked: cell, coord: [colIndex, rowIndex]})
             }
 
-            if (rowIndex + colIndex === field[0].length) {
+            if (rowIndex + colIndex === field[0].length - 1) {
+                if (!diagBucket[1]) {
+                    diagBucket[1] = []
+                }
                 diagBucket[1].push({isMarked: cell, coord: [colIndex, rowIndex]})
             }
         })
