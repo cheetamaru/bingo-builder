@@ -1,15 +1,22 @@
 type FieldItem = boolean
 
-type Coords = [number, number]
+type Coords = {
+    row: number;
+    col: number;
+}
 
 type ReturnValue = {
     isBingo: boolean;
-    bingoCoords: Coords[]
+    bingoMatrix: boolean[][]
 }
 
 type InnerArrayType = {
     isMarked: boolean,
     coord: Coords
+}
+
+const checkBingo = (arr: InnerArrayType[]): boolean => {
+    return arr.reduce((prev, curr) => prev && curr.isMarked, true)
 }
 
 export const determineBingo = (field: FieldItem[][]): ReturnValue => {
@@ -18,35 +25,35 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
     const diagBucket: InnerArrayType[][] = []
 
     field.forEach((row, rowIndex) => {
-        rowsBucket.push(row.map((el, ind) => ({ isMarked: el, coord: [ind, rowIndex] })))
+        rowsBucket.push(row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} })))
 
         row.forEach((cell, colIndex) => {
             if (!colsBucket[colIndex]) {
                 colsBucket[colIndex] = []
             }
-            colsBucket[colIndex].push({isMarked: cell, coord: [colIndex, rowIndex]})
+            colsBucket[colIndex].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
 
             if (rowIndex === colIndex) {
                 if (!diagBucket[0]) {
                     diagBucket[0] = []
                 }
-                diagBucket[0].push({isMarked: cell, coord: [colIndex, rowIndex]})
+                diagBucket[0].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
             }
 
             if (rowIndex + colIndex === field[0].length - 1) {
                 if (!diagBucket[1]) {
                     diagBucket[1] = []
                 }
-                diagBucket[1].push({isMarked: cell, coord: [colIndex, rowIndex]})
+                diagBucket[1].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
             }
         })
     })
 
     // todo: finish logic
 
-    const bingoRows: Coords[] = []
-    const bingoCols: Coords[] = []
-    const bingoDiags: Coords[] = []
+    const bingoRows: Coords[][] = rowsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : [])
+    const bingoCols: Coords[][] = []
+    const bingoDiags: Coords[][] = []
 
     const isBingo = Boolean(bingoRows.length) || Boolean(bingoCols.length) || Boolean(bingoDiags.length)
 
@@ -55,6 +62,6 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
 
     return {
         isBingo,
-        bingoCoords,
+        bingoMatrix: [],
     }
 }
