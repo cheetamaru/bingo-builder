@@ -19,7 +19,7 @@ const checkBingo = (arr: InnerArrayType[]): boolean => {
     return arr.reduce((prev, curr) => prev && curr.isMarked, true)
 }
 
-export const determineBingo = (field: FieldItem[][]): ReturnValue => {
+const determineBingo = (field: FieldItem[][]): ReturnValue => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(field[0].length).fill(null).map(() => [])]
     const diagBucket: InnerArrayType[][] = []
@@ -49,19 +49,22 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         })
     })
 
-    // todo: finish logic
-
-    const bingoRows: Coords[][] = rowsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : [])
-    const bingoCols: Coords[][] = []
-    const bingoDiags: Coords[][] = []
+    const bingoRows: Coords[][] = rowsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
+    const bingoCols: Coords[][] = colsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
+    const bingoDiags: Coords[][] = diagBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
 
     const isBingo = Boolean(bingoRows.length) || Boolean(bingoCols.length) || Boolean(bingoDiags.length)
 
-    const bingoNumsRepeated = [...bingoRows, ...bingoCols, ...bingoDiags]
-    const bingoCoords = Array.from(new Set([...bingoNumsRepeated]))
+    const bingoCoords = [...bingoRows, ...bingoCols, ...bingoDiags].flat()
+
+    const bingoMatrix = Array(field.length).fill(null).map(() => [...Array(field[0].length).fill(false)])
+
+    bingoCoords.forEach(({col, row}) => {
+        bingoMatrix[row][col] = true
+    })
 
     return {
         isBingo,
-        bingoMatrix: [],
+        bingoMatrix,
     }
 }
