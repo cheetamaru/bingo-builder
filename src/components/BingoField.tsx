@@ -7,6 +7,7 @@ import { useImmerReducer } from 'use-immer';
 import styles from './BingoField.module.css'
 import BingoFieldSizeSettings from './BingoFieldSizeSettings';
 import { bingoFieldReducer } from '@/reducers';
+import { determineBingo } from '@/utils';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
@@ -169,6 +170,12 @@ export default function BingoField() {
     }
 
     const matrix = useMemo(() => arrayToMatrix(items, cols), [items, cols]) 
+
+    const isBingo = useMemo(() => {
+        const { isBingo } = determineBingo(matrix.map(el => el.map(elem => Boolean(elem.isMarked))));
+
+        return isBingo
+    }, [matrix])
 
     const getBlocks = () => {
         return matrix.map((row, rowIndex) => {

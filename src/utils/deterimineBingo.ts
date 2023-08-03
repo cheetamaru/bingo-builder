@@ -19,7 +19,10 @@ const checkBingo = (arr: InnerArrayType[]): boolean => {
     return arr.reduce((prev, curr) => prev && curr.isMarked, true)
 }
 
-const determineBingo = (field: FieldItem[][]): ReturnValue => {
+// todo: check diagonal if bingo is not square
+// todo: add tests
+
+export const determineBingo = (field: FieldItem[][]): ReturnValue => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(field[0].length).fill(null).map(() => [])]
     const diagBucket: InnerArrayType[][] = []
