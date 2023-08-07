@@ -19,13 +19,12 @@ const checkBingo = (arr: InnerArrayType[]): boolean => {
     return arr.reduce((prev, curr) => prev && curr.isMarked, true)
 }
 
-// todo: check diagonal if bingo is not square
-// todo: add tests
-
 export const determineBingo = (field: FieldItem[][]): ReturnValue => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(field[0].length).fill(null).map(() => [])]
     const diagBucket: InnerArrayType[][] = []
+
+    const isDiagonalPossible = field.length === field[0].length
 
     field.forEach((row, rowIndex) => {
         rowsBucket.push(row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} })))
@@ -36,14 +35,14 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
             }
             colsBucket[colIndex].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
 
-            if (rowIndex === colIndex) {
+            if (isDiagonalPossible && rowIndex === colIndex) {
                 if (!diagBucket[0]) {
                     diagBucket[0] = []
                 }
                 diagBucket[0].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
             }
 
-            if (rowIndex + colIndex === field[0].length - 1) {
+            if (isDiagonalPossible && rowIndex + colIndex === field[0].length - 1) {
                 if (!diagBucket[1]) {
                     diagBucket[1] = []
                 }
