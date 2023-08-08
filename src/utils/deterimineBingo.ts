@@ -19,6 +19,12 @@ const checkBingo = (arr: InnerArrayType[]): boolean => {
     return arr.reduce((prev, curr) => prev && curr.isMarked, true)
 }
 
+const bucketToCoordsTransformer = (bucket: InnerArrayType[][]): Coords[][] => {
+    return bucket
+        .map((el) => checkBingo(el) ? el.map(elem => elem.coord) : [])
+        .filter((elem) => elem.length)
+}
+ 
 export const determineBingo = (field: FieldItem[][]): ReturnValue => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(field[0].length).fill(null).map(() => [])]
@@ -51,9 +57,9 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         })
     })
 
-    const bingoRows: Coords[][] = rowsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
-    const bingoCols: Coords[][] = colsBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
-    const bingoDiags: Coords[][] = diagBucket.map((el) => checkBingo(el) ? el.map(elem => elem.coord) : []).filter((elem) => elem.length)
+    const bingoRows: Coords[][] = bucketToCoordsTransformer(rowsBucket)
+    const bingoCols: Coords[][] = bucketToCoordsTransformer(colsBucket)
+    const bingoDiags: Coords[][] = bucketToCoordsTransformer(diagBucket)
 
     const isBingo = Boolean(bingoRows.length) || Boolean(bingoCols.length) || Boolean(bingoDiags.length)
 
