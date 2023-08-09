@@ -63,9 +63,16 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
 
     const isBingo = Boolean(bingoRows.length) || Boolean(bingoCols.length) || Boolean(bingoDiags.length)
 
-    const bingoCoords = [...bingoRows, ...bingoCols, ...bingoDiags].flat()
-
     const bingoMatrix = Array(field.length).fill(null).map(() => [...Array(field[0].length).fill(false)])
+
+    if (!isBingo) {
+        return {
+            isBingo,
+            bingoMatrix
+        }
+    }
+
+    const bingoCoords = [...bingoRows, ...bingoCols, ...bingoDiags].flat()
 
     bingoCoords.forEach(({col, row}) => {
         bingoMatrix[row][col] = true
