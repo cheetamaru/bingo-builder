@@ -1,3 +1,4 @@
+import React from "react";
 import BingoField from '@/components/BingoField'
 import Head from 'next/head'
 

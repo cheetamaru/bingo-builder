@@ -235,6 +235,9 @@ export default function BingoField() {
         if (fieldMode === "play") {
             return <>
                 <button onClick={habdleResetMarkings}>Reset markings</button>
+                <div>
+                    {isBingo && "Bingo!"}
+                </div>
             </>
         }
     }
