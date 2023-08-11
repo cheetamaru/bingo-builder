@@ -4,7 +4,7 @@ import { BingoBlockService } from '@/services/BingoBlockService';
 import { BingoFieldMode, BingoFieldReducerActions, BingoItem } from '@/types';
 import React, { useMemo, useState, DragEvent, ChangeEvent } from 'react';
 import { useImmerReducer } from 'use-immer';
-import styles from './BingoField.module.css'
+import styles from '@/styles/BingoField.module.css'
 import BingoFieldSizeSettings from './BingoFieldSizeSettings';
 import { bingoFieldReducer } from '@/reducers';
 import { determineBingo } from '@/utils';
@@ -244,6 +244,7 @@ export default function BingoField() {
 
     return <>
         <div>
+            <div>Mode: {fieldMode}</div>
             <div>
                 {getEditSettings()}
             </div>

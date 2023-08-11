@@ -1,5 +1,5 @@
 import React, { ReactNode, DragEvent } from "react";
-import styles from './BingoBlock.module.css'
+import styles from '@/styles/BingoBlock.module.css'
 import { BingoFieldMode } from "@/types";
 
 interface Props {
