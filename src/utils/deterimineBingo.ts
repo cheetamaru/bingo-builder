@@ -24,16 +24,34 @@ const bucketToCoordsTransformer = (bucket: InnerArrayType[][]): Coords[][] => {
         .map((el) => checkBingo(el) ? el.map(elem => elem.coord) : [])
         .filter((elem) => elem.length)
 }
+
+const getBuckets = (colLength: number) => {
+    const rowsBucket: InnerArrayType[][] = []
+    const colsBucket: InnerArrayType[][] = [...Array(colLength).fill(null).map(() => [])]
+    const diagBucket: InnerArrayType[][] = []
+
+    return {
+        rowsBucket,
+        colsBucket,
+        diagBucket
+    }
+}
+
+const getFormattedRow = (row: FieldItem[], rowIndex: number): InnerArrayType[] => {
+    return row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} }))
+}
  
 export const determineBingo = (field: FieldItem[][]): ReturnValue => {
-    const rowsBucket: InnerArrayType[][] = []
-    const colsBucket: InnerArrayType[][] = [...Array(field[0].length).fill(null).map(() => [])]
-    const diagBucket: InnerArrayType[][] = []
+    const {
+        rowsBucket,
+        colsBucket,
+        diagBucket
+    } = getBuckets(field[0].length)
 
     const isDiagonalPossible = field.length === field[0].length
 
     field.forEach((row, rowIndex) => {
-        rowsBucket.push(row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} })))
+        rowsBucket.push(getFormattedRow(row, rowIndex))
 
         row.forEach((cell, colIndex) => {
             if (!colsBucket[colIndex]) {
