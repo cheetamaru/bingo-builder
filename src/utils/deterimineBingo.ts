@@ -28,7 +28,7 @@ const bucketToCoordsTransformer = (bucket: InnerArrayType[][]): Coords[][] => {
 const getBuckets = (colLength: number) => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(colLength).fill(null).map(() => [])]
-    const diagBucket: InnerArrayType[][] = []
+    const diagBucket: InnerArrayType[][] = [[],[]]
 
     return {
         rowsBucket,
@@ -40,37 +40,38 @@ const getBuckets = (colLength: number) => {
 const getFormattedRow = (row: FieldItem[], rowIndex: number): InnerArrayType[] => {
     return row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} }))
 }
+
+const getEmptyMatrix = (field: FieldItem[][]) => {
+    return Array(field.length).fill(null).map(() => [...Array(field[0].length).fill(false)])
+}
  
 export const determineBingo = (field: FieldItem[][]): ReturnValue => {
+    const colLength = field[0].length
+    const isDiagonalPossible = field.length === colLength
+
     const {
         rowsBucket,
         colsBucket,
         diagBucket
-    } = getBuckets(field[0].length)
-
-    const isDiagonalPossible = field.length === field[0].length
+    } = getBuckets(colLength)
 
     field.forEach((row, rowIndex) => {
         rowsBucket.push(getFormattedRow(row, rowIndex))
 
         row.forEach((cell, colIndex) => {
-            if (!colsBucket[colIndex]) {
-                colsBucket[colIndex] = []
-            }
-            colsBucket[colIndex].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
+            const newElement: InnerArrayType = {isMarked: cell, coord: { col: colIndex, row: rowIndex}}
 
-            if (isDiagonalPossible && rowIndex === colIndex) {
-                if (!diagBucket[0]) {
-                    diagBucket[0] = []
-                }
-                diagBucket[0].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
+            colsBucket[colIndex].push(newElement)
+
+            const isAscendingDiagonal = isDiagonalPossible && rowIndex === colIndex
+            const isDescendingDiagonal = isDiagonalPossible && rowIndex + colIndex === colLength - 1
+
+            if (isAscendingDiagonal) {
+                diagBucket[0].push(newElement)
             }
 
-            if (isDiagonalPossible && rowIndex + colIndex === field[0].length - 1) {
-                if (!diagBucket[1]) {
-                    diagBucket[1] = []
-                }
-                diagBucket[1].push({isMarked: cell, coord: { col: colIndex, row: rowIndex}})
+            if (isDescendingDiagonal) {
+                diagBucket[1].push(newElement)
             }
         })
     })
@@ -81,7 +82,7 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
 
     const isBingo = Boolean(bingoRows.length) || Boolean(bingoCols.length) || Boolean(bingoDiags.length)
 
-    const bingoMatrix = Array(field.length).fill(null).map(() => [...Array(field[0].length).fill(false)])
+    const bingoMatrix = getEmptyMatrix(field)
 
     if (!isBingo) {
         return {
