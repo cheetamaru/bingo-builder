@@ -11,8 +11,9 @@ type ReturnValue = {
 }
 
 type InnerArrayType = {
-    isMarked: boolean,
-    coord: Coords
+    isMarked: boolean;
+    coord: Coords;
+    checkSum: string;
 }
 
 const checkBingo = (arr: InnerArrayType[]): boolean => {
@@ -37,8 +38,10 @@ const getBuckets = (colLength: number) => {
     }
 }
 
+const getCheckSum = (col: number, row: number) => `${col}-${row}`
+
 const getFormattedRow = (row: FieldItem[], rowIndex: number): InnerArrayType[] => {
-    return row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex} }))
+    return row.map((el, ind) => ({ isMarked: el, coord: {col: ind, row: rowIndex}, checkSum: getCheckSum(ind, rowIndex) }))
 }
 
 const getEmptyMatrix = (field: FieldItem[][]) => {
@@ -59,7 +62,7 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         rowsBucket.push(getFormattedRow(row, rowIndex))
 
         row.forEach((cell, colIndex) => {
-            const newElement: InnerArrayType = {isMarked: cell, coord: { col: colIndex, row: rowIndex}}
+            const newElement: InnerArrayType = {isMarked: cell, coord: { col: colIndex, row: rowIndex}, checkSum: getCheckSum(colIndex, rowIndex)}
 
             colsBucket[colIndex].push(newElement)
 
