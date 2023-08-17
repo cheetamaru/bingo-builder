@@ -8,6 +8,7 @@ import styles from '@/styles/BingoField.module.css'
 import BingoFieldSizeSettings from './BingoFieldSizeSettings';
 import { bingoFieldReducer } from '@/reducers';
 import { determineBingo } from '@/utils';
+import BingoFieldModeBlock from './BingoFieldModeBlock';
 
 const { getInitialArray, arrayToMatrix, boardSize } = BingoBlockService
 
@@ -95,7 +96,6 @@ export default function BingoField() {
         ev.preventDefault();
         const prevItem = JSON.parse(ev.dataTransfer.getData("text/plain"));
 
-        console.log("prevItem", prevItem)
         dispatch({
             type: "drop",
             bingoItem,
@@ -171,10 +171,8 @@ export default function BingoField() {
 
     const matrix = useMemo(() => arrayToMatrix(items, cols), [items, cols]) 
 
-    const isBingo = useMemo(() => {
-        const { isBingo } = determineBingo(matrix.map(el => el.map(elem => Boolean(elem.isMarked))));
-
-        return isBingo
+    const { isBingo } = useMemo(() => {
+        return determineBingo(matrix.map(el => el.map(elem => Boolean(elem.isMarked))));
     }, [matrix])
 
     const getBlocks = () => {
@@ -244,11 +242,13 @@ export default function BingoField() {
 
     return <>
         <div>
-            <div>Mode: {fieldMode}</div>
+            <BingoFieldModeBlock
+                fieldMode={fieldMode}
+                onClick={handleModeChange}
+            />
             <div>
                 {getEditSettings()}
             </div>
-            <button onClick={handleModeChange}>Change mode</button>
             <div>
                 {getPlaySettings()}
             </div>
