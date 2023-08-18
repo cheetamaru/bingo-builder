@@ -216,27 +216,33 @@ export default function BingoField() {
     }
 
     const getEditSettings = () => {
-        if (fieldMode === "edit") {
-            return <>
-                <BingoFieldSizeSettings
-                    cols={cols}
-                    rows={rows}
-                    onColInput={handleColInput}
-                    onRowInput={handleRowInput}
-                />
-                <BingoFieldShuffleButton onClick={handleShuffle} />
-            </>
-        }
+        return <>
+            <BingoFieldSizeSettings
+                cols={cols}
+                rows={rows}
+                onColInput={handleColInput}
+                onRowInput={handleRowInput}
+            />
+            <BingoFieldShuffleButton onClick={handleShuffle} />
+        </>
     }
 
     const getPlaySettings = () => {
+        return <>
+            <button onClick={habdleResetMarkings}>Reset markings</button>
+            <div>
+                {isBingo && "Bingo!"}
+            </div>
+        </>
+    }
+
+    const getSettings = () => {
+        if (fieldMode === "edit") {
+            return getEditSettings()
+        }
+
         if (fieldMode === "play") {
-            return <>
-                <button onClick={habdleResetMarkings}>Reset markings</button>
-                <div>
-                    {isBingo && "Bingo!"}
-                </div>
-            </>
+            return getPlaySettings()
         }
     }
 
@@ -247,10 +253,7 @@ export default function BingoField() {
                 onClick={handleModeChange}
             />
             <div>
-                {getEditSettings()}
-            </div>
-            <div>
-                {getPlaySettings()}
+                {getSettings()}
             </div>
         </div>
         <div className={styles["bingo-field"]}>
