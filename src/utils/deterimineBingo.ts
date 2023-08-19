@@ -62,7 +62,11 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         rowsBucket.push(getFormattedRow(row, rowIndex))
 
         row.forEach((cell, colIndex) => {
-            const newElement: InnerArrayType = {isMarked: cell, coord: { col: colIndex, row: rowIndex}, checkSum: getCheckSum(colIndex, rowIndex)}
+            const newElement: InnerArrayType = {
+                isMarked: cell,
+                coord: { col: colIndex, row: rowIndex},
+                checkSum: getCheckSum(colIndex, rowIndex)
+            }
 
             colsBucket[colIndex].push(newElement)
 

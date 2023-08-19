@@ -62,7 +62,6 @@ export default function BingoBlock(props: Props) {
 
   const isDraggable = mode === "edit"
 
-
   return (
     <>
       <div
