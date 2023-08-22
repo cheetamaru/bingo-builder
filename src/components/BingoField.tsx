@@ -247,17 +247,21 @@ export default function BingoField() {
     }
 
     return <>
-        <div>
-            <BingoFieldModeBlock
-                fieldMode={fieldMode}
-                onClick={handleModeChange}
-            />
-        </div>
-        <div>
-            {getSettings()}
-        </div>
-        <div className={styles["bingo-field"]}>
-            {getBlocks()}
-        </div>
+        <div className={styles.container}>
+            <div>
+                <div>
+                    <BingoFieldModeBlock
+                        fieldMode={fieldMode}
+                        onClick={handleModeChange}
+                    />
+                </div>
+                <div>
+                    {getSettings()}
+                </div>
+            </div>
+            <div className={styles["bingo-field"]}>
+                {getBlocks()}
+            </div>
+        </div> 
     </>
 }

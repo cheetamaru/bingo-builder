@@ -12,7 +12,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Bingo Builder</h1>
         <BingoField />
       </main>
     </>
