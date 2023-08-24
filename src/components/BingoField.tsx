@@ -248,14 +248,14 @@ export default function BingoField() {
 
     return <>
         <div className={styles.container}>
-            <div>
-                <div>
+            <div className={styles.top}>
+                <div className={styles.mode}>
                     <BingoFieldModeBlock
                         fieldMode={fieldMode}
                         onClick={handleModeChange}
                     />
                 </div>
-                <div>
+                <div className={styles.settings}>
                     {getSettings()}
                 </div>
             </div>
