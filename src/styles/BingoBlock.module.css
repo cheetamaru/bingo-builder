@@ -17,6 +17,10 @@
     background-color: orange;
 }
 
+.bingo-block--play {
+    cursor: pointer;
+}
+
 .bingo-block__content {
     display: inline;
 }

@@ -44,6 +44,10 @@ export default function BingoBlock(props: Props) {
       classes.push(styles["bingo-block--marked"])
     }
 
+    if (mode === "play") {
+      classes.push(styles["bingo-block--play"])
+    }
+
     return classes.join(" ")
   }
 
