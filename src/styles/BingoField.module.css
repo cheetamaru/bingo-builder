@@ -32,6 +32,11 @@
     display: flex;
 }
 
+.bingo-field__row:last-child {
+    display: flex;
+    border-bottom: 1px solid black;;
+}
+
 .bingo-field__edit-input {
     width: 100%;
 }

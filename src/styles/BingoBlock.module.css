@@ -5,8 +5,14 @@
     position: relative;
     padding: 10px;
     border: 1px solid black;
+    border-right: none;
+    border-bottom: none;
     width: 100px;
     height: 100px;
+}
+
+.bingo-block:last-child {
+    border-right: 1px solid black;
 }
 
 .bingo-block--swapping {
