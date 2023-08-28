@@ -57,10 +57,8 @@ export default function BingoBlock(props: Props) {
     }
 
     return <>
-        <div className={styles["bingo-block__tools"]}>
-          <button onClick={onSwap}>↔</button>
-          <button onClick={onEdit}>🛠️</button>
-        </div>
+        <button className={styles["bingo-block__tools--right-bottom"]} onClick={onSwap}>↔</button>
+        <button className={styles["bingo-block__tools--right-top"]} onClick={onEdit}>🛠️</button>
     </>
   }
 
