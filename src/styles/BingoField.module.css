@@ -4,7 +4,7 @@
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
@@ -12,11 +12,11 @@
 
 .top {
     display: flex;
-    margin-bottom: 1em;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mode {
-    margin-right: 5em;
     display: flex;
     flex-direction: column;
     align-items: center;
