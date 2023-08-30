@@ -13,6 +13,7 @@ interface Props {
     onDragLeave?: (e: DragEvent<HTMLElement>) => void;
     onDrop?: (e: DragEvent<HTMLElement>) => void;
     onClick?: () => void;
+    onDisable?: () => void;
     isSwapping?: boolean;
     isMarked?: boolean;
 }
@@ -28,6 +29,7 @@ export default function BingoBlock(props: Props) {
     onDragStart,
     onDragEnter,
     onDragLeave,
+    onDisable,
     isSwapping,
     isMarked,
     mode
@@ -51,14 +53,19 @@ export default function BingoBlock(props: Props) {
     return classes.join(" ")
   }
 
+  const getToolsClass = (additionalClass: string) => {
+    return `${styles["bingo-block__tools"]} ${additionalClass}`
+  }
+
   const getTools = () => {
     if (mode === "play") {
       return <></>
     }
 
     return <>
-        <button className={styles["bingo-block__tools--right-bottom"]} onClick={onSwap}>↔</button>
-        <button className={styles["bingo-block__tools--right-top"]} onClick={onEdit}>🛠️</button>
+        <button className={getToolsClass(styles["bingo-block__tools--right-bottom"])} onClick={onSwap}>↔</button>
+        <button className={getToolsClass(styles["bingo-block__tools--right-top"])} onClick={onEdit}>🛠️</button>
+        <button className={getToolsClass(styles["bingo-block__tools--left-top"])} onClick={onDisable}>🚫</button>
     </>
   }
 

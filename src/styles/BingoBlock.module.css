@@ -33,20 +33,20 @@
 
 .bingo-block__tools {
     position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 .bingo-block__tools--right-top {
-    position: absolute;
     right: 0;
     top: 0;
 }
 
 .bingo-block__tools--right-bottom {
-    position: absolute;
     right: 0;
     bottom: 0
 }
+
+.bingo-block__tools--left-top {
+    left: 0;
+    top: 0
+}
+
