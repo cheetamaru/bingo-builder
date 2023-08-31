@@ -51,6 +51,11 @@ export type BingoFieldResetMarkingsAction = {
     type: "resetMarkings";
 }
 
+export type BingoFieldDisableAction = {
+    type: "disable";
+    bingoItem: BingoItem;
+}
+
 export type BingoFieldReducerActions =
     BingoFieldStartEditAction | 
     BingoFieldStopEditAction |
@@ -61,4 +66,5 @@ export type BingoFieldReducerActions =
     BingoFieldDropAction |
     BingoFieldDragStartAction |
     BingoFieldMarkAction |
-    BingoFieldResetMarkingsAction;
+    BingoFieldResetMarkingsAction |
+    BingoFieldDisableAction;

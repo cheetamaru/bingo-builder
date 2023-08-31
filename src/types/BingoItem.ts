@@ -6,4 +6,5 @@ export type BingoItem = {
     index?: number;
     isEditing?: boolean;
     isMarked?: boolean;
+    isDisabled?: boolean;
 }

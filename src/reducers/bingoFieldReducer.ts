@@ -1,5 +1,5 @@
 import { BingoBlockService } from "@/services/BingoBlockService"
-import { BingoFieldChangeSizeAction, BingoFieldDragStartAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldMarkAction, BingoFieldReducerActions, BingoFieldResetMarkingsAction, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
+import { BingoFieldChangeSizeAction, BingoFieldDisableAction, BingoFieldDragStartAction, BingoFieldDropAction, BingoFieldEditAction, BingoFieldMarkAction, BingoFieldReducerActions, BingoFieldResetMarkingsAction, BingoFieldStartEditAction, BingoFieldStopEditAction, BingoFieldSwapAction, BingoItem } from "@/types"
 import { shuffleArray } from "@/utils"
 
 const { getInitialArray } = BingoBlockService;
@@ -43,6 +43,10 @@ export const bingoFieldReducer = (draft: BingoItem[], action: BingoFieldReducerA
         }
         case "resetMarkings": {
             performResetMarkings(draft, action)
+            break;
+        }
+        case "disable": {
+            performDisable(draft, action)
             break;
         }
         default: {
@@ -161,4 +165,18 @@ const performResetMarkings = (draft: BingoItem[], action: BingoFieldResetMarking
     for (let item of draft) {
         item.isMarked = false
     }
+}
+
+const performDisable = (draft: BingoItem[], action: BingoFieldDisableAction) => {
+    const item = draft.find((el) => el.key === action.bingoItem.key)
+
+    if (!item) {
+        throw new Error("Item Not Found")
+    }
+
+    if (item.isDisabled === undefined) {
+        item.isDisabled = false
+    }
+
+    item.isDisabled = !item.isDisabled
 }

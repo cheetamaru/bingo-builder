@@ -14,6 +14,7 @@ interface Props {
     onDrop?: (e: DragEvent<HTMLElement>) => void;
     onClick?: () => void;
     onDisable?: () => void;
+    isDisabled?: boolean;
     isSwapping?: boolean;
     isMarked?: boolean;
 }
@@ -32,7 +33,8 @@ export default function BingoBlock(props: Props) {
     onDisable,
     isSwapping,
     isMarked,
-    mode
+    mode,
+    isDisabled
   } = props 
   
   const getBingoBlockClasses = () => {
@@ -71,6 +73,14 @@ export default function BingoBlock(props: Props) {
 
   const isDraggable = mode === "edit"
 
+  const handleClick = () => {
+    if(isDisabled) {
+      return
+    }
+
+    onClick?.()
+  }
+
   return (
     <>
       <div
@@ -81,13 +91,13 @@ export default function BingoBlock(props: Props) {
         onDrop={onDrop}
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
-        onClick={onClick}
+        onClick={handleClick}
       >
         {getTools()}
         <div
           className={styles["bingo-block__content"]}
         >
-            {children}
+            {isDisabled ? "X" : children}
         </div>
       </div>
     </>

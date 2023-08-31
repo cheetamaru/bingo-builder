@@ -123,6 +123,13 @@ export default function BingoField() {
         }
     }
 
+    const handleDisable = (bingoItem: BingoItem) => {
+        dispatch({
+            type: "disable",
+            bingoItem
+        })
+    }
+
     const getBlockContent = (block: BingoItem) => {
         const { content, isEditing } = block
 
@@ -162,7 +169,9 @@ export default function BingoField() {
                 isSwapping={getIsSwapping(block)}
                 onEdit={() => startEdit(block)}
                 onClick={() => handleClick(block)}
+                onDisable={() => handleDisable(block)}
                 isMarked={block.isMarked}
+                isDisabled={block.isDisabled}
             >
                 {getBlockContent(block)}
             </ BingoBlock>
