@@ -27,6 +27,10 @@
     cursor: pointer;
 }
 
+.bingo-block--disabled {
+    background-color: blanchedalmond;
+}
+
 .bingo-block__content {
     display: inline;
 }

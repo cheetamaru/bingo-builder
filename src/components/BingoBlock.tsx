@@ -52,6 +52,10 @@ export default function BingoBlock(props: Props) {
       classes.push(styles["bingo-block--play"])
     }
 
+    if (isDisabled) {
+      classes.push(styles["bingo-block--disabled"])
+    }
+
     return classes.join(" ")
   }
 
