@@ -27,8 +27,9 @@
     cursor: pointer;
 }
 
-.bingo-block--disabled {
+.bingo-block--play.bingo-block--disabled {
     background-color: blanchedalmond;
+    cursor: not-allowed;
 }
 
 .bingo-block__content {
