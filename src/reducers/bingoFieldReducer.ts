@@ -179,4 +179,5 @@ const performDisable = (draft: BingoItem[], action: BingoFieldDisableAction) => 
     }
 
     item.isDisabled = !item.isDisabled
+    item.isMarked = false
 }
