@@ -178,6 +178,14 @@ export default function BingoField() {
         })
     }
 
+    const getResetMarkings = () => {
+        if (fieldMode === "play") {
+            return <div className={styles.resetMarkings}>
+                    <button onClick={habdleResetMarkings}>Reset markings</button>
+                </div>
+        }
+    }
+
     const matrix = useMemo(() => arrayToMatrix(items, cols), [items, cols]) 
 
     const { isBingo } = useMemo(() => {
@@ -238,7 +246,6 @@ export default function BingoField() {
 
     const getPlaySettings = () => {
         return <>
-            <button onClick={habdleResetMarkings}>Reset markings</button>
             <div>
                 {isBingo && "Bingo!"}
             </div>
@@ -270,8 +277,11 @@ export default function BingoField() {
                         {getSettings()}
                     </div>
                 </div>
-                <div className={styles["bingo-field"]}>
-                    {getBlocks()}
+                <div>
+                    <div className={styles["bingo-field"]}>
+                        {getBlocks()}
+                    </div>
+                    {getResetMarkings()}
                 </div>
             </div> 
         </div>

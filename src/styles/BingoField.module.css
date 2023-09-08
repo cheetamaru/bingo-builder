@@ -47,3 +47,10 @@
     margin-top: 10px;
     height: 40px;
 }
+
+.resetMarkings {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

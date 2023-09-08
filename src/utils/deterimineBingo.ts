@@ -26,7 +26,7 @@ const bucketToCoordsTransformer = (bucket: InnerArrayType[][]): Coords[][] => {
         .filter((elem) => elem.length)
 }
 
-const getBuckets = (colLength: number) => {
+const initialaizeBuckets = (colLength: number) => {
     const rowsBucket: InnerArrayType[][] = []
     const colsBucket: InnerArrayType[][] = [...Array(colLength).fill(null).map(() => [])]
     const diagBucket: InnerArrayType[][] = [[],[]]
@@ -56,7 +56,7 @@ export const determineBingo = (field: FieldItem[][]): ReturnValue => {
         rowsBucket,
         colsBucket,
         diagBucket
-    } = getBuckets(colLength)
+    } = initialaizeBuckets(colLength)
 
     field.forEach((row, rowIndex) => {
         rowsBucket.push(getFormattedRow(row, rowIndex))
