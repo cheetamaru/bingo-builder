@@ -266,22 +266,26 @@ export default function BingoField() {
         <div>
             <h1 className={styles.title}>Bingo Builder</h1>
             <div className={styles.container}>
-                <div className={styles.top}>
-                    <div className={styles.mode}>
-                        <BingoFieldModeBlock
-                            fieldMode={fieldMode}
-                            onClick={handleModeChange}
-                        />
-                    </div>
-                    <div className={styles.settings}>
-                        {getSettings()}
+                <div className={styles.panel}>
+                    <div className={styles.top}>
+                        <div className={styles.mode}>
+                            <BingoFieldModeBlock
+                                fieldMode={fieldMode}
+                                onClick={handleModeChange}
+                            />
+                        </div>
+                        <div className={styles.settings}>
+                            {getSettings()}
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div className={styles["bingo-field"]}>
-                        {getBlocks()}
+                <div className={styles.field}>
+                    <div>
+                        <div className={styles["bingo-field"]}>
+                            {getBlocks()}
+                        </div>
+                        {getResetMarkings()}
                     </div>
-                    {getResetMarkings()}
                 </div>
             </div> 
         </div>

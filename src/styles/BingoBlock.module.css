@@ -38,6 +38,7 @@
 
 .bingo-block__tools {
     position: absolute;
+    cursor: pointer;
 }
 
 .bingo-block__tools--right-top {

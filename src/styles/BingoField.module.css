@@ -6,8 +6,8 @@
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    justify-content: center;
     min-height: calc(100vh - 50px);
+    justify-content: space-between;
 }
 
 .top {
@@ -53,4 +53,19 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.field {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.panel {
+    width: 300px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.1);
 }
